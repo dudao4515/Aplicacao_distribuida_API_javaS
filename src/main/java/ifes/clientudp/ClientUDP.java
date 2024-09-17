@@ -1,6 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
 package ifes.clientudp;
 
 import java.io.IOException;
@@ -18,6 +15,7 @@ import java.util.logging.Logger;
  */
 
 public class ClientUDP {
+
     private String nomeDNS;
     private int serverPort;
     private byte[] meuIP;
@@ -28,13 +26,13 @@ public class ClientUDP {
             nomeDNS = endereco.getHostName();
             meuIP = endereco.getAddress();
         } catch (UnknownHostException e) {
-            System.out.println("Host desconhecido: " + e.getMessage());
+            System.out.println("Host Desconhecido: " + e.getMessage());
         }
         serverPort = 6789;
     }
 
     public ClientUDP(String nomeDNSservidor) {
-        nomeDNS = "meu_pc";
+        nomeDNS = "pcDuda"; //nome do computador que o servidor é executado
         meuIP = null;
         serverPort = 6789;
     }
@@ -58,6 +56,7 @@ public class ClientUDP {
             aSocket.receive(reply);
 
             resposta = new String(reply.getData());
+            //resposta = resposta + "\n";
 
         } catch (UnknownHostException ex) {
             System.out.println("Socket: " + ex.getMessage());
@@ -85,5 +84,5 @@ public class ClientUDP {
         String s = new String(meuIP);
         return s;
     }
-}
 
+}
