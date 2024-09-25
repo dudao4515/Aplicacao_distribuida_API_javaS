@@ -109,7 +109,12 @@ public class FrmPrincipal extends javax.swing.JFrame {
         notaFilme.setMaximum(2);
         notaFilme.setPaintLabels(true);
         notaFilme.setToolTipText("3");
-        notaFilme.setValue(2);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ifes/images/1.png"))); // NOI18N
+
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ifes/images/2.png"))); // NOI18N
+
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ifes/images/3.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -273,7 +278,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         ClientUDP cliente = new ClientUDP();
         String resposta = cliente.enviaMensagem(msg);
-        
+
         if ("Inserido com Sucesso!".equals(resposta.trim())) {
             msgArea.setText("Salvo com sucesso!");
         } else {
@@ -317,7 +322,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        //Lista de Avaliações
+        // Lista de Avaliações
         String msg = "4;" + clientCmbBx.getSelectedIndex();
 
         ClientUDP cliente = new ClientUDP();
@@ -330,24 +335,33 @@ public class FrmPrincipal extends javax.swing.JFrame {
             msgArea.setText("");
             return;
         }
+        if (resposta.isEmpty() || resposta.equals("Sem avaliações registradas.")) {
+            msgArea.setText("Cliente ainda não tem avaliações!");
+            return;
+        }
 
-        String[] partes = resposta.split(";");
-        int j = 0;
+        System.out.println("Resposta recebida: " + resposta);
 
-        // Ajuste o loop para garantir que 'i + 1' nunca exceda o limite
-        for (int i = 0; i < partes.length - 1; i += 2) {
+        String[] partes = resposta.split("\n");
+
+        for (String parte : partes) {
             try {
-                j = i;
-                // Verifica se os índices são válidos antes de acessar
-                String filme = filmeCmbBx.getItemAt(Integer.parseInt(partes[j]));
-                String nota = partes[j + 1];
-                formatacao += ("Filme: " + filme + " Nota -> " + nota + "\n");
+                String[] filmeNota = parte.split(":");
+
+                int filmeIndex = Integer.parseInt(filmeNota[0].replace("Filme ", "").trim());
+                String nota = filmeNota[1].trim();
+
+                String filmeNome = filmeCmbBx.getItemAt(filmeIndex);
+
+                formatacao += "Filme: " + filmeNome + ", Nota: " + nota + "\n";
 
             } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-                System.err.println("Erro ao processar os dados: " + e.getMessage());
-                break; // Encerra o loop se ocorrer um erro para evitar mais invasões de memória
+                msgArea.setText("Erro ao processar os dados: " + e.getMessage());
+                break;
             }
         }
+
+        // Exibir a formatação final na área de mensagem
         msgArea.setText(formatacao);
     }//GEN-LAST:event_jButton3ActionPerformed
 
