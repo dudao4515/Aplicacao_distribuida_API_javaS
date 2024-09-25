@@ -106,8 +106,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Ranqueie o filme"));
 
         notaFilme.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        notaFilme.setMaximum(3);
-        notaFilme.setMinimum(1);
+        notaFilme.setMaximum(2);
         notaFilme.setPaintLabels(true);
         notaFilme.setToolTipText("3");
         notaFilme.setValue(2);
@@ -152,7 +151,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jPanel5.setBackground(new java.awt.Color(160, 228, 255));
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jButton2.setText("Avaliar Novo");
@@ -274,11 +273,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         ClientUDP cliente = new ClientUDP();
         String resposta = cliente.enviaMensagem(msg);
-
-        if (Integer.parseInt(resposta.trim()) == 0) {
-            JOptionPane.showMessageDialog(null, "Inserido com Sucesso!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
+        
+        if ("Inserido com Sucesso!".equals(resposta.trim())) {
+            msgArea.setText("Salcom com sucesso!");
         } else {
-            JOptionPane.showMessageDialog(null, "Erro ao Inserir nota do Filme: " + filmeCmbBx.getSelectedItem(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+            msgArea.setText("Erro ao Inserir nota do Filme: " + filmeCmbBx.getSelectedItem());
         }
     }//GEN-LAST:event_btSaveActionPerformed
 
@@ -294,7 +293,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         } else {
             filmeCmbBx.setSelectedIndex(Integer.parseInt(resposta.trim()));
             filmeCmbBx.requestFocus();
-            filmeCmbBx.setSelectedIndex(0);
+            msgArea.setText("Avalie o filme selecionado!");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -305,8 +304,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
         ClientUDP cliente = new ClientUDP();
         String resposta = cliente.enviaMensagem(msg);
         int filme = Integer.parseInt(resposta.trim());
+        String nomeFilme = filmeCmbBx.getItemAt(filme);
 
-         msgArea.setText("Você deveria assistir: " + filme);
+        msgArea.setText("Você deveria assistir: " + nomeFilme);
 
         if (filme == -1) {
             JOptionPane.showMessageDialog(null, "Erro ao Receber Recomendação\n Não tem nenhum filmeavaliado!", "ERRO!", JOptionPane.ERROR_MESSAGE);
@@ -342,6 +342,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 String filme = filmeCmbBx.getItemAt(Integer.parseInt(partes[j]));
                 String nota = partes[j + 1];
                 formatacao += ("Filme: " + filme + " Nota -> " + nota + "\n");
+
             } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
                 System.err.println("Erro ao processar os dados: " + e.getMessage());
                 break; // Encerra o loop se ocorrer um erro para evitar mais invasões de memória
@@ -366,7 +367,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
             e.printStackTrace();
         }
         //</editor-fold>
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

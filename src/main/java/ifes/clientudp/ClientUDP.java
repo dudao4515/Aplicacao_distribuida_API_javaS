@@ -56,7 +56,7 @@ public class ClientUDP {
             aSocket.receive(reply);
 
             resposta = new String(reply.getData());
-            //resposta = resposta + "\n";
+            
 
         } catch (UnknownHostException ex) {
             System.out.println("Socket: " + ex.getMessage());
