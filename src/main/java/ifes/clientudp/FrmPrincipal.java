@@ -275,7 +275,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         String resposta = cliente.enviaMensagem(msg);
         
         if ("Inserido com Sucesso!".equals(resposta.trim())) {
-            msgArea.setText("Salcom com sucesso!");
+            msgArea.setText("Salvo com sucesso!");
         } else {
             msgArea.setText("Erro ao Inserir nota do Filme: " + filmeCmbBx.getSelectedItem());
         }
